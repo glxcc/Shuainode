@@ -8,11 +8,17 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var partials = require('express-partials');
+
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//设置默认模版路径
+// load the express-partials middleware
+app.use(partials());
 
 app.use(favicon());
 app.use(logger('dev'));
