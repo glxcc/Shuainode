@@ -12,13 +12,15 @@ var partials = require('express-partials');
 
 var app = express();
 
+app.engine('html', require('hogan-express'));
+app.enable('view cache');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-//设置默认模版路径
-// load the express-partials middleware
-app.use(partials());
+//app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+app.set('layout', 'layout');
+app.set('partials',{head:'head'});
 
 app.use(favicon());
 app.use(logger('dev'));

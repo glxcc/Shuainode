@@ -1,50 +1,51 @@
 <!DOCTYPE html>
        <html>
          <head>
-           <title><%= title %></title>
-           <link rel='stylesheet' href='../public/stylesheets/bootstrap.css' />
+           <title>{{>head}}</title>
+           <link rel='stylesheet' href='stylesheets/bootstrap.css' />
            <style type='text/css'>
                body{
                    padding-top:60px;
                    padding-bottom:40px
                }
            </style>
-           <link rel='stylesheet' href='../public/stylesheets/bootstrap-theme.css' />
+           <link rel='stylesheet' href='stylesheets/bootstrap-theme.css' />
          </head>
          <body>
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
                   <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target="nav-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="/">Bolg</a>
-                    <div class="nav-collapse">
-                        <ul class="nav">
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
                             <li class="active"><a href="/">首页</a></li>
-                            <% if(!user){%>
+                            {{#user}}
                             <li><a href="/login">登录</a></li>
                             <li><a href="/reg">注册</a></li>
-                            <% } else {%>
-                                <li><a href="/">用户：<%=user.name%></a></li>
+                            {{/user}}
+                            {{^user}}
+                                <li><a href="/">用户：{{user.name}}</a></li>
                                 <li><a href="/logout">退出</a></li>
-                            <% } %>
+                            {{/user}}
                         </ul>
                     </div>
                   </div>
                 </div>
             </div>
-             <%- message %>
+           {{message}}
             <div id="container" class="container">
-                <%- body %>
+                {{{ yield }}}
                 <hr />
                 <footer>
-                    <p><a href="http://www.uspcat.com" target="_blank">USPCAT技术狂人论坛</a></p>
+                    <p><a href="http://www.glxcc.com" target="_blank">glxcc.com</a></p>
                 </footer>
             </div>
          </body>
-         <script src="../public/javascripts/jquery.js"></script>
-         <script src="../public/javascripts/bootstrap.js"></script>
+         <script src="javascripts/jquery-2.1.1.js"></script>
+         <script src="javascripts/bootstrap.js"></script>
        </html>

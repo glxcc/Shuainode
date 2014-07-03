@@ -3,7 +3,19 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Shuai ge page' });
+  //res.render('index', { title: 'Shuai ge page' });
+    res.locals = {
+        title: 'shuai'
+    };
+    return res.render(
+        'index',
+        {
+            partials:
+            {
+                part: 'part'
+            }
+        }
+    );
 });
 
 router.use('/login', function(req, res, next){
