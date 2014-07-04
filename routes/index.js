@@ -1,9 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
+var mongoose = require('mongoose');
+
 /* GET home page. */
 router.get('/', function(req, res) {
   //res.render('index', { title: 'Shuai ge page' });
+    //mongoose.connect('mongodb://localhost/test');
+    mongoose.connect('localhost', 'test', { server: { poolSize: 2 }})
+
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function callback () {
+        console.log('mongo db connected')
+    });
+
     res.locals = {
         title: 'shuai'
     };
