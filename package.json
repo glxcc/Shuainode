@@ -7,13 +7,13 @@
   },
   "dependencies": {
     "express": "~4.2.0",
-    "static-favicon": "~1.0.0",
-    "morgan": "~1.0.0",
-    "cookie-parser": "~1.0.1",
-    "body-parser": "~1.0.0",
-    "debug": "~0.7.4",
-    "mongoose": "~3.8.12",
-    "hogan-express": "~0.5.2"
-
+    "static-favicon": "latest",
+    "morgan": "latest",
+    "cookie-parser": "latest",
+    "body-parser": "latest",
+    "debug": "latest",
+    "mongoose": "latest",
+    "hogan-express": "latest",
+    "express-partials": "latest"
   }
 }
