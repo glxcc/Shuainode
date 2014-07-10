@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var app = express();
-// apply the routes to our application
-app.use('/', router);
+
+var User=require("../models/user.js");
+var Post=require("../models/post.js")
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -21,37 +21,102 @@ router.get('/', function(req, res) {
     );
 });
 
+router.get('/login', function(req, res, next){
+    res.render('login',{title: 'login GET page'})
+});
 
-/*router.use('/login', function(req, res, next){
-    res.render('login', {title: 'login'})
-})*/
-
-
-router.get('/u/:user', function(req, res, next){
-    res.render('user', {title: req.params.user})
+router.post('/login', function(req, res, next){
+    res.render('login',{title: 'login POST page'})
 })
+
+// login routes
+/*app.route('/login').get(function(req, res) {
+    // show the form (GET http://localhost:8080/login)
+    console.lon("login called");
+    res.render('login',{title: 'this is login page'})
+
+}).post(function(req, res) {
+
+    // process the form (POST http://localhost:8080/login)
+    console.log('processing');
+    res.send('processing the login form!');
+
+});*/
 
 router.get('/reg', function(req, res, next){
     res.render('reg', {title: 'register'})
 })
 
+/**
+ * 退出操作
+ * @param req
+ * @param res
+ */
 router.get('/logout', function(req, res, next){
     res.render('login',{title: 'you have logged out'})
 })
 
-// apply the routes to our application
-app.use('/', router);
-
-app.route('/login')
-    // show the form (GET http://localhost:8080/login)
-    .get(function(req, res) {
-        res.render('login', {title: 'login'})
-    })
-
-    // process the form (POST http://localhost:8080/login)
-    .post(function(req, res) {
-        console.log('processing');
-        res.send('processing the login form!');
-    });
-
 module.exports = router;
+
+
+
+exports.user=function(req,res){
+    User.find(req.params.user,function(err,user){
+        if(!user){
+            req.session.error="用户不存在";
+            return res.redirect("/");
+        }
+        Post.find(user.name,function(err,posts){
+            if(err){
+                req.session.error=err;
+                return req.redirect("/");
+            }
+            res.render("user",{
+                title:user.name,
+                posts:posts
+            })
+        });
+    });
+}
+
+exports.post=function(req,res){
+    var currentUser=req.session.user;
+    var post=new Post(currentUser.name,req.body.post);
+    post.save(function(err){
+        if(err){
+            req.session.error=err;
+            return res.redirect("/");
+        }
+        req.session.success="发表成功";
+        res.redirect("/u/"+currentUser.name);
+    });
+}
+
+/**
+ * 登录操作
+ * @param req
+ * @param res
+ */
+exports.doLogin=function(req,res){
+    //将登录的密码转成md5形式
+    var md5=crypto.createHash("md5");
+    var password=md5.update(req.body.password).digest("base64");
+    //验证用户
+    User.find(req.body.username,function(err,user){
+        //首先根据用户名查询是否存在
+        if(!user){
+            req.session.error="用户不存在";
+            return res.redirect("/login");
+        }
+        //验证密码是否正确
+        if(user.password!=password){
+            req.session.error="用户密码错误";
+            return res.redirect("/login");
+        }
+        req.session.user=user;
+        req.session.success="登录成功";
+        res.redirect("/");
+    })
+}
+
+

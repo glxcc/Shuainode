@@ -2,15 +2,18 @@
  * Created by nlg on 08/07/2014.
  */
 
-var db = require('./database');
-var Schema = mongoose.Schema;
+var mongodb = require('./database');
+var Schema = mongodb.mongoose.Schema;
 
 var postSchema = new Schema({
     name:{ type:String, default:''},
     title:{type:String, default:''},
     message:{type:String, default:''},
     comments:[{body: String, date:Date}],
-    user:Schema.objectId
+    User:Schema.ObjectId
 });
 
-mongoose.model('post', postSchema);
+var Post = mongodb.mongoose.model('post', postSchema);
+
+var PostDAO = function(){};
+module.exports = new PostDAO();
