@@ -29,13 +29,11 @@ var User = mongodb.mongoose.model('User', userSchema);
 var UserDAO = function(){};
 
 UserDAO.prototype.save = function(obj, callback){
-    var instance = new User(obj);
-    instance.save(function(err){
+    var newUser = new User(obj);
+    newUser.save(function(err){
         callback(err);
     })
 }
 
 
-
-
-module.exports = new UserDAO();
+exports.UserDao = new UserDAO();

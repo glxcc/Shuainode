@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var User=require("../models/user.js");
-var Post=require("../models/post.js")
+var UserDao=require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -26,7 +25,9 @@ router.get('/login', function(req, res, next){
 });
 
 router.post('/login', function(req, res, next){
-    res.render('login',{title: 'login POST page'})
+
+    console.log(req.param.username);
+    res.render('login',{title: 'login POST page', username:req.body.username})
 })
 
 // login routes
@@ -45,6 +46,32 @@ router.post('/login', function(req, res, next){
 
 router.get('/reg', function(req, res, next){
     res.render('reg', {title: 'register'})
+})
+
+router.post('/reg', function(req , res, next){
+
+    var username = req.body.username;
+    var password = req.body.password;
+
+
+
+    var regUser = {
+        username : req.body.username,
+        password : req.body.password
+    };
+    //regUser.username = req.body.username;
+   // regUser.password = req.body.password;
+
+    //var UserDao = Models.UserDao;
+
+    console.log(module.export);
+    console.log(UserDao);
+
+    UserDao.save(regUser, function(){
+        console.log('saved');
+        res.render('login',{title: 'sssssss'})
+    });
+
 })
 
 /**
